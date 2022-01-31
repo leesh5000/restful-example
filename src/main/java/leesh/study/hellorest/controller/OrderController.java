@@ -29,38 +29,38 @@ public class OrderController {
     private final OrderRepository orderRepository;
     private final OrderModelAssembler assembler;
 
-    @GetMapping("/orders")
+    @GetMapping("/api/orders")
     public CollectionModel<EntityModel<Order>> all() {
 
-        List<EntityModel<Order>> orders = orderRepository.findAll().stream() //
-                .map(assembler::toModel) //
+        List<EntityModel<Order>> orders = orderRepository.findAll().stream()
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(orders, //
+        return CollectionModel.of(orders,
                 linkTo(methodOn(OrderController.class).all()).withSelfRel());
     }
 
-    @GetMapping("/orders/{id}")
+    @GetMapping("/api/orders/{id}")
     public EntityModel<Order> one(@PathVariable Long id) {
 
-        Order order = orderRepository.findById(id) //
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
 
         return assembler.toModel(order);
     }
 
-    @PostMapping("/orders")
+    @PostMapping("/api/orders")
     ResponseEntity<EntityModel<Order>> newOrder(@RequestBody Order order) {
 
         order.setStatus(Status.IN_PROGRESS);
         Order newOrder = orderRepository.save(order);
 
-        return ResponseEntity //
-                .created(linkTo(methodOn(OrderController.class).one(newOrder.getId())).toUri()) //
+        return ResponseEntity
+                .created(linkTo(methodOn(OrderController.class).one(newOrder.getId())).toUri())
                 .body(assembler.toModel(newOrder));
     }
 
-    @DeleteMapping("/orders/{id}/cancel")
+    @DeleteMapping("/api/orders/{id}/cancel")
     public ResponseEntity<?> cancel(@PathVariable Long id) {
 
         Order order = orderRepository.findById(id)
@@ -79,10 +79,10 @@ public class OrderController {
                         .withDetail("You can't cancel an order that is in the " + order.getStatus() + " status"));
     }
 
-    @PutMapping("/orders/{id}/complete")
+    @PutMapping("/api/orders/{id}/complete")
     public ResponseEntity<?> complete(@PathVariable Long id) {
 
-        Order order = orderRepository.findById(id) //
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
 
         if (order.getStatus() == Status.IN_PROGRESS) {
