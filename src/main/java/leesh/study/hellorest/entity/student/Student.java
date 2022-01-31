@@ -1,10 +1,14 @@
-package leesh.study.hellorest.entity;
+package leesh.study.hellorest.entity.student;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Table(name="student")
 @Entity
 public class Student {
@@ -17,6 +21,12 @@ public class Student {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "age")
     private Integer age;
 
@@ -25,5 +35,4 @@ public class Student {
 
     @Column(name = "major")
     private String major;
-
 }

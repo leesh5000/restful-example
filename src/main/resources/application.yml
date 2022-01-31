@@ -12,3 +12,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    generate-ddl: true
+  data:
+    rest:
+      base-path: /api
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
