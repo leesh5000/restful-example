@@ -27,7 +27,8 @@ public class StudentController {
     public ResponseEntity<?> one(@PathVariable Long id) {
 
         Student student = studentService.findById(id);
-        return ResponseEntity.ok(assembler.toModel(student));
+        EntityModel<Student> entityModel = assembler.toModel(student);
+        return ResponseEntity.ok(entityModel);
     }
 
     @GetMapping("/api/students")
